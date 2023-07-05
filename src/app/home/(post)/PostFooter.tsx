@@ -2,7 +2,7 @@
 
 import { Button, CardFooter } from '@nextui-org/react';
 import { IconBlockquote, IconHeart, IconHeartFilled, IconMessageCircle } from '@tabler/icons-react';
-import { experimental_useOptimistic as useOptimistic, useState } from 'react';
+import { experimental_useOptimistic as useOptimistic } from 'react';
 import { useSession } from 'next-auth/react';
 import { likePost } from '../actions';
 import type { PostData } from '@/utils';
