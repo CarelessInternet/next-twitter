@@ -2,7 +2,7 @@
 
 import { Button, CardFooter } from '@nextui-org/react';
 import { IconBlockquote, IconHeart, IconHeartFilled, IconMessageCircle } from '@tabler/icons-react';
-import { experimental_useOptimistic as useOptimistic, useState } from 'react';
+import { useEffect, experimental_useOptimistic as useOptimistic, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { likePost } from '../actions';
 import type { PostData } from '@/utils';
@@ -14,9 +14,11 @@ export default function PostFooter({ post }: { post: PostData }) {
 		(state, newLikeCount: number) => ({ ...state, likeCount: newLikeCount })
 	);
 
-	const [hasUserLiked, setHasUserLiked] = useState(
-		Boolean(post.likes.find((like) => like.userId === session?.user.id))
-	);
+	const [hasUserLiked, setHasUserLiked] = useState(false);
+
+	useEffect(() => {
+		setHasUserLiked(Boolean(post.likes.find((like) => like.userId === session?.user.id)));
+	}, [session]);
 
 	return (
 		<CardFooter className="flex justify-between">
