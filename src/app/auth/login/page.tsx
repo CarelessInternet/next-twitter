@@ -1,8 +1,13 @@
-import { getProviders } from 'next-auth/react';
-import { LoginProviders } from './loginProviders';
+import { CSRF_experimental } from '@/utils';
+import { Button } from '@nextui-org/button';
 
-export default async function Login() {
-	const providers = await getProviders();
-
-	return <LoginProviders providers={providers!} />;
+export default function Login() {
+	return (
+		<form action="/api/auth/signin/google" method="post">
+			<Button type="submit" color="danger" variant="ghost">
+				Sign in with Google
+			</Button>
+			<CSRF_experimental />
+		</form>
+	);
 }

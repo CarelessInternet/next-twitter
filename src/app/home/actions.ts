@@ -1,10 +1,10 @@
 'use server';
 
-import { type PostData, prisma, serverSession } from '@/utils';
+import { auth, type PostData, prisma } from '@/utils';
 import { revalidatePath } from 'next/cache';
 
 export async function createPost(data: FormData) {
-	const session = await serverSession();
+	const session = await auth();
 
 	if (!session) {
 		throw new Error('Not logged in');
@@ -27,7 +27,7 @@ export async function createPost(data: FormData) {
 }
 
 export async function likePost(post: PostData) {
-	const session = await serverSession();
+	const session = await auth();
 	const likeAuthor = post.likes.find((like) => like.userId === session?.user.id);
 
 	if (likeAuthor) {

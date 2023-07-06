@@ -1,7 +1,7 @@
 import type { Prisma } from '@prisma/client';
 
-export { prisma } from './prisma';
-export { serverSession } from './serverSession';
-export { getRelativeTime } from './getRelativeTime';
+export * from './prisma';
+export * from './getRelativeTime';
+export * from './auth';
 
 export type PostData = Prisma.PostGetPayload<{ include: { author: true; likes: true } }>;
