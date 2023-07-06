@@ -1,6 +1,7 @@
 import './globals.css';
 import { Header } from '@/components';
 import { Providers } from './providers';
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<Providers>
 					<Header />
 					{children}
+					<Analytics />
 				</Providers>
 			</body>
 		</html>
