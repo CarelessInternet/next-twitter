@@ -28,7 +28,12 @@ export async function createPost(data: FormData) {
 
 export async function likePost(post: PostData) {
 	const session = await auth();
-	const likeAuthor = post.likes.find((like) => like.userId === session?.user.id);
+
+	if (!session) {
+		throw new Error('Not logged in');
+	}
+
+	const likeAuthor = post.likes.find((like) => like.userId === session.user.id);
 
 	if (likeAuthor) {
 		await prisma.like.delete({ where: { id: likeAuthor.id } });

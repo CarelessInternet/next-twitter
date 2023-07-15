@@ -21,25 +21,25 @@ import { signOut, useSession } from 'next-auth/react';
 import NextLink from 'next/link';
 import Image from 'next/image';
 
-function CustomLink({ href, pathname, text }: { href: string; pathname: string; text: string }) {
-	return (
-		<Link href={href} color={pathname === href ? 'secondary' : 'foreground'} as={NextLink}>
-			{text}
-		</Link>
-	);
-}
-
 export function Header() {
 	const pathname = usePathname();
 	const router = useRouter();
 	const { data: session } = useSession();
+
+	function CustomLink({ href, text }: { href: string; text: string }) {
+		return (
+			<Link href={href} color={pathname === href ? 'secondary' : 'foreground'} as={NextLink}>
+				{text}
+			</Link>
+		);
+	}
 
 	function ProfileButton() {
 		return session ? (
 			<Dropdown backdrop="opaque">
 				<DropdownTrigger>
 					<Button color="primary" variant="faded">
-						{session?.user?.name}
+						{session.user.name}
 					</Button>
 				</DropdownTrigger>
 				<DropdownMenu color="primary" variant="faded">
@@ -79,18 +79,18 @@ export function Header() {
 			<NavbarBrand>
 				<Image src="/vercel.png" width={64} height={64} alt="vercel" />
 				<div className="text-lg">
-					<CustomLink href="/" text="Next Twitter" pathname={pathname} />
+					<CustomLink href="/" text="Next Twitter" />
 				</div>
 			</NavbarBrand>
 			<NavbarContent justify="center" className="hidden md:flex">
 				<NavbarItem>
-					<CustomLink href="/home" text="Home" pathname={pathname} />
+					<CustomLink href="/home" text="Home" />
 				</NavbarItem>
 				<NavbarItem>
-					<CustomLink href="/about" text="About" pathname={pathname} />
+					<CustomLink href="/about" text="About" />
 				</NavbarItem>
 				<NavbarItem>
-					<CustomLink href="/technology" text="Technology" pathname={pathname} />
+					<CustomLink href="/technology" text="Technology" />
 				</NavbarItem>
 			</NavbarContent>
 			<NavbarContent justify="end">
@@ -106,13 +106,13 @@ export function Header() {
 			</NavbarContent>
 			<NavbarMenu>
 				<NavbarMenuItem>
-					<CustomLink href="/home" text="Home" pathname={pathname} />
+					<CustomLink href="/home" text="Home" />
 				</NavbarMenuItem>
 				<NavbarMenuItem>
-					<CustomLink href="/about" text="About" pathname={pathname} />
+					<CustomLink href="/about" text="About" />
 				</NavbarMenuItem>
 				<NavbarMenuItem>
-					<CustomLink href="/technology" text="Technology" pathname={pathname} />
+					<CustomLink href="/technology" text="Technology" />
 				</NavbarMenuItem>
 				<NavbarMenuItem>
 					<ProfileButton />

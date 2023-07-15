@@ -4,8 +4,9 @@ import { Card, CardBody, CardHeader } from '@nextui-org/card';
 import { Divider } from '@nextui-org/divider';
 import { IconDiscountCheckFilled } from '@tabler/icons-react';
 import { type PostData, getRelativeTime } from '@/utils';
+import type { Session } from 'next-auth/types';
 
-export default function Post({ post }: { post: PostData }) {
+export default function Post({ post, session }: { post: PostData; session: Session }) {
 	return (
 		<Card className="bg-zinc-400/10">
 			<CardHeader className="flex gap-2">
@@ -32,9 +33,11 @@ export default function Post({ post }: { post: PostData }) {
 				</div>
 			</CardHeader>
 			<Divider />
-			<CardBody className="text-small text-default-700 p-3">{post.content}</CardBody>
+			<CardBody className="text-small text-default-700 p-3 whitespace-pre-wrap">
+				{post.content}
+			</CardBody>
 			<Divider />
-			<PostFooter post={post} />
+			<PostFooter post={post} session={session} />
 		</Card>
 	);
 }

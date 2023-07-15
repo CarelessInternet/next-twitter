@@ -20,7 +20,7 @@ export default async function Home() {
 				<div className="max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl">
 					{posts.map((post) => (
 						<div key={post.id}>
-							<Post post={post} />
+							<Post post={post} session={session} />
 							<Spacer y={4} />
 						</div>
 					))}
