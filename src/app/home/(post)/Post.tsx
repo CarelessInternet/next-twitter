@@ -18,8 +18,8 @@ export default function Post({ post, session }: { post: PostData; session: Sessi
 					className="rounded-full max-h-8"
 				/>
 				<div className="flex flex-col items-start justify-center">
-					<div className="flex flex-row gap-1">
-						<h4 className="text-medium font-semibold leading-none text-default-700">
+					<div className="flex flex-row gap-1 items-center">
+						<h4 className="text-medium font-semibold text-default-700 inline-block align-middle leading-normal">
 							{post.author.name}
 						</h4>
 						{post.author.verified && (

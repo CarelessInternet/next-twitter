@@ -46,7 +46,7 @@ export default async function Homepage() {
 							href="/auth/login"
 							color="warning"
 							variant="ghost"
-							className="text-medium transition ease-in-out duration-300 hover:scale-105"
+							className="text-medium transition ease-in-out duration-300 hover:scale-110"
 							startContent={<IconLogin />}
 						>
 							Login

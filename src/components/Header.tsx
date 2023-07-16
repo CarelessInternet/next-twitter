@@ -38,11 +38,11 @@ export function Header() {
 		return session ? (
 			<Dropdown backdrop="opaque">
 				<DropdownTrigger>
-					<Button color="primary" variant="faded">
+					<Button color="primary" variant="flat">
 						{session.user.name}
 					</Button>
 				</DropdownTrigger>
-				<DropdownMenu color="primary" variant="faded">
+				<DropdownMenu color="primary" variant="flat">
 					<DropdownItem
 						key="login"
 						startContent={<IconLogin />}
