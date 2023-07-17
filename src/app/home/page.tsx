@@ -1,6 +1,5 @@
 import Create from './Create';
 import Post from './(post)/Post';
-import { Spacer } from '@nextui-org/spacer';
 import { auth, prisma } from '@/utils';
 import { redirect } from 'next/navigation';
 
@@ -14,14 +13,12 @@ export default async function Home() {
 		});
 
 		return (
-			<main className="flex flex-col flex-wrap content-center items-center">
+			<main className="flex flex-col flex-wrap content-center items-center gap-6">
 				<Create />
-				<Spacer y={4} />
 				<div className="max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl">
 					{posts.map((post) => (
-						<div key={post.id}>
+						<div key={post.id} className="mb-6">
 							<Post post={post} session={session} />
-							<Spacer y={4} />
 						</div>
 					))}
 				</div>
