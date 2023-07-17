@@ -24,7 +24,7 @@ import Image from 'next/image';
 export function Header() {
 	const pathname = usePathname();
 	const router = useRouter();
-	const { data: session } = useSession();
+	const { data: session, status } = useSession();
 
 	function CustomLink({ href, text }: { href: string; text: string }) {
 		return (
@@ -35,43 +35,55 @@ export function Header() {
 	}
 
 	function ProfileButton() {
-		return session ? (
-			<Dropdown backdrop="opaque">
-				<DropdownTrigger>
-					<Button color="primary" variant="flat">
-						{session.user.name}
-					</Button>
-				</DropdownTrigger>
-				<DropdownMenu color="primary" variant="flat">
-					<DropdownItem
-						key="login"
+		if (status !== 'loading') {
+			if (session) {
+				return (
+					<Dropdown backdrop="opaque">
+						<DropdownTrigger>
+							<Button color="primary" variant="flat">
+								{session.user.name}
+							</Button>
+						</DropdownTrigger>
+						<DropdownMenu color="primary" variant="flat">
+							<DropdownItem
+								key="login"
+								startContent={<IconLogin />}
+								onPress={() => router.push('/auth/login')}
+							>
+								Login
+							</DropdownItem>
+							<DropdownItem
+								key="logout"
+								color="danger"
+								className="text-danger"
+								startContent={<IconLogout />}
+								onPress={() => signOut({ callbackUrl: '/' })}
+							>
+								Log out
+							</DropdownItem>
+						</DropdownMenu>
+					</Dropdown>
+				);
+			} else {
+				return (
+					<Button
+						href="/auth/login"
+						color="primary"
+						variant="bordered"
 						startContent={<IconLogin />}
-						onPress={() => router.push('/auth/login')}
+						as={NextLink}
 					>
 						Login
-					</DropdownItem>
-					<DropdownItem
-						key="logout"
-						color="danger"
-						className="text-danger"
-						startContent={<IconLogout />}
-						onPress={() => signOut({ callbackUrl: '/' })}
-					>
-						Log out
-					</DropdownItem>
-				</DropdownMenu>
-			</Dropdown>
-		) : (
-			<Button
-				href="/auth/login"
-				color="primary"
-				variant="bordered"
-				startContent={<IconLogin />}
-				as={NextLink}
-			>
-				Login
-			</Button>
-		);
+					</Button>
+				);
+			}
+		} else {
+			return (
+				<Button color="primary" variant="bordered" isLoading>
+					Loading User
+				</Button>
+			);
+		}
 	}
 
 	return (
