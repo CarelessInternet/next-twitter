@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Button } from '@nextui-org/button';
 import { Spacer } from '@nextui-org/spacer';
 import { IconExternalLink, IconHome, IconLogin } from '@tabler/icons-react';
-import { auth } from '@/utils';
+import { auth } from '@/auth';
 
 export default async function Homepage() {
 	const session = await auth();

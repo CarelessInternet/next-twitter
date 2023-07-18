@@ -9,7 +9,8 @@ const nextConfig = {
 		]
 	},
 	experimental: {
-		serverActions: true
+		serverActions: true,
+		typedRoutes: true
 	},
 	typescript: {
 		ignoreBuildErrors: true

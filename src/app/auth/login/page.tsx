@@ -1,4 +1,4 @@
-import { CSRF_experimental } from '@/utils';
+import { CSRF_experimental } from '@/auth';
 import { Button } from '@nextui-org/button';
 import { IconBrandGoogle } from '@tabler/icons-react';
 

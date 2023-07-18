@@ -5,7 +5,7 @@ import { IconBlockquote, IconHeart, IconHeartFilled, IconMessageCircle } from '@
 import { experimental_useOptimistic as useOptimistic, useState } from 'react';
 import { likePost } from '../actions';
 import type { PostData } from '@/utils';
-import type { Session } from 'next-auth/types';
+import type { Session } from 'next-auth';
 
 export default function PostFooter({ post, session }: { post: PostData; session: Session }) {
 	const [optimisticLikes, addOptimisticLike] = useOptimistic(
@@ -31,9 +31,7 @@ export default function PostFooter({ post, session }: { post: PostData; session:
 				className="hover:bg-danger-500"
 				startContent={hasUserLiked ? <IconHeartFilled /> : <IconHeart />}
 				onPress={async () => {
-					addOptimisticLike(
-						!hasUserLiked ? optimisticLikes.likeCount + 1 : optimisticLikes.likeCount - 1
-					);
+					addOptimisticLike(optimisticLikes.likeCount + (!hasUserLiked ? 1 : -1));
 					setHasUserLiked((bool) => !bool);
 
 					await likePost(post);

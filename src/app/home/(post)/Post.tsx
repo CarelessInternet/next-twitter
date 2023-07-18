@@ -4,11 +4,11 @@ import { Card, CardBody, CardHeader } from '@nextui-org/card';
 import { Divider } from '@nextui-org/divider';
 import { IconDiscountCheckFilled } from '@tabler/icons-react';
 import { type PostData, getRelativeTime } from '@/utils';
-import type { Session } from 'next-auth/types';
+import type { Session } from 'next-auth';
 
 export default function Post({ post, session }: { post: PostData; session: Session }) {
 	return (
-		<Card className="bg-zinc-400/10">
+		<Card className="bg-zinc-400/10 mb-6">
 			<CardHeader className="flex gap-2">
 				<Image
 					src={post.author.image!}
