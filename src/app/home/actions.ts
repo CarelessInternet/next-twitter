@@ -1,21 +1,8 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { type PostData, prisma, type LoadMoreAction } from '@/utils';
+import { type PostData, prisma } from '@/utils';
 import { auth } from '@/auth';
-
-export const loadPosts: LoadMoreAction<PostData[]> = async (offset: number = 0) => {
-	const POST_SIZE = 10;
-
-	const data = await prisma.post.findMany({
-		include: { author: true, likes: true },
-		orderBy: [{ id: 'desc' }],
-		skip: offset * POST_SIZE,
-		take: POST_SIZE
-	});
-
-	return { data, hasMoreData: data.length >= POST_SIZE };
-};
 
 export async function createPost(content?: PostData['content']) {
 	const session = await auth();

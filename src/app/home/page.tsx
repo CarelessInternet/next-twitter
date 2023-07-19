@@ -2,7 +2,21 @@ import Posts from './(post)/Posts';
 import Create from './Create';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
-import { loadPosts } from './actions';
+import { type LoadMoreAction, type PostData, prisma } from '@/utils';
+
+export const loadPosts: LoadMoreAction<PostData[]> = async (offset: number = 0) => {
+	'use server';
+
+	const POST_SIZE = 10;
+	const data = await prisma.post.findMany({
+		include: { author: true, likes: true },
+		orderBy: [{ id: 'desc' }],
+		skip: offset * POST_SIZE,
+		take: POST_SIZE
+	});
+
+	return { data, hasMoreData: data.length >= POST_SIZE };
+};
 
 export default async function Home() {
 	const session = await auth();

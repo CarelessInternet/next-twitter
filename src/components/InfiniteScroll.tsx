@@ -15,7 +15,7 @@ export function InfiniteScroll({
 	loadMoreAction: (offset: number) => Promise<void>;
 }>) {
 	const ref = useRef<HTMLDivElement>(null);
-	const [pageNum, setPageNum] = useState(1);
+	const pageNum = useRef(1);
 	const [loading, setLoading] = useState(false);
 
 	const loadMore = useCallback(
@@ -23,8 +23,8 @@ export function InfiniteScroll({
 			if (!abortController.signal.aborted && hasMore && !loading) {
 				setLoading(true);
 
-				loadMoreAction(pageNum).finally(() => setLoading(false));
-				setPageNum((num) => num + 1);
+				loadMoreAction(pageNum.current).finally(() => setLoading(false));
+				pageNum.current += 1;
 			}
 		},
 		[loadMoreAction, hasMore, loading, pageNum]
