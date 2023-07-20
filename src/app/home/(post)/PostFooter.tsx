@@ -18,10 +18,24 @@ export default function PostFooter({ post, session }: { post: PostData; session:
 
 	return (
 		<CardFooter className="flex justify-between">
-			<Button isIconOnly size="sm" radius="full" color="success" className="hover:bg-success-500">
+			<Button
+				isIconOnly
+				size="sm"
+				radius="full"
+				color="success"
+				className="hover:bg-success-500"
+				aria-label="Reply"
+			>
 				<IconMessageCircle />
 			</Button>
-			<Button isIconOnly size="sm" radius="full" color="primary" className="hover:bg-primary-500">
+			<Button
+				isIconOnly
+				size="sm"
+				radius="full"
+				color="primary"
+				className="hover:bg-primary-500"
+				aria-label="Repost"
+			>
 				<IconBlockquote />
 			</Button>
 			<Button
@@ -29,6 +43,7 @@ export default function PostFooter({ post, session }: { post: PostData; session:
 				radius="full"
 				color="danger"
 				className="hover:bg-danger-500"
+				aria-label="Like"
 				startContent={hasUserLiked ? <IconHeartFilled /> : <IconHeart />}
 				onPress={async () => {
 					addOptimisticLike(optimisticLikes.likeCount + (!hasUserLiked ? 1 : -1));

@@ -25,11 +25,9 @@ export default function Post({ post, session }: { post: PostData; session: Sessi
 						{post.author.verified && (
 							<IconDiscountCheckFilled width={18} height={18} className="text-sky-600" />
 						)}
-						<h5 className="text-small text-default-400">
-							{`· ${getRelativeTime(post.createdAt)}`}
-						</h5>
+						<h5 className="text-small text-stone-400">{`· ${getRelativeTime(post.createdAt)}`}</h5>
 					</div>
-					<h5 className="text-xs text-default-300">{post.author.email}</h5>
+					<h5 className="text-xs text-stone-400">{post.author.email}</h5>
 				</div>
 			</CardHeader>
 			<Divider />

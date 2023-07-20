@@ -28,7 +28,7 @@ export function Header() {
 
 	function CustomLink({ href, text }: { href: string; text: string }) {
 		return (
-			<Link href={href} color={pathname === href ? 'secondary' : 'foreground'} as={NextLink}>
+			<Link href={href} color={pathname === href ? 'success' : 'foreground'} as={NextLink}>
 				{text}
 			</Link>
 		);
@@ -88,12 +88,16 @@ export function Header() {
 
 	return (
 		<Navbar isBordered={true} className="mb-4" position="static">
-			<NavbarBrand>
-				<Image src="/vercel.png" width={64} height={64} alt="vercel" />
-				<div className="text-lg">
-					<CustomLink href="/" text="Next Twitter" />
-				</div>
-			</NavbarBrand>
+			<NavbarContent>
+				<NavbarItem>
+					<NavbarBrand>
+						<Image src="/vercel.png" width={64} height={64} alt="vercel" />
+						<div className="text-lg">
+							<CustomLink href="/" text="Next Twitter" />
+						</div>
+					</NavbarBrand>
+				</NavbarItem>
+			</NavbarContent>
 			<NavbarContent justify="center" className="hidden md:flex">
 				<NavbarItem>
 					<CustomLink href="/home" text="Home" />
@@ -107,7 +111,11 @@ export function Header() {
 			</NavbarContent>
 			<NavbarContent justify="end">
 				<NavbarItem className="text-3xl">
-					<Link isExternal href="https://github.com/CarelessInternet/next-twitter">
+					<Link
+						isExternal
+						href="https://github.com/CarelessInternet/next-twitter"
+						aria-label="GitHub"
+					>
 						<IconBrandGithub className="text-default-700" />
 					</Link>
 				</NavbarItem>
