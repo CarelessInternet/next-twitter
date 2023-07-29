@@ -1,18 +1,10 @@
 'use client';
 
-import Post from './Post';
+import { Post } from '@/components';
 import { useEffect, useState } from 'react';
 import { InfiniteScroll } from '@/components';
-import type { LoadMoreAction, PostData } from '@/utils';
+import { uniqueArray, type LoadMoreAction, type PostData } from '@/utils';
 import type { Session } from 'next-auth';
-
-function uniquePosts(firstPosts: PostData[], secondPosts: PostData[]) {
-	const ids = new Set(firstPosts.map((post) => post.id));
-
-	return [...firstPosts, ...secondPosts.filter((item) => !ids.has(item.id))].sort(
-		(a, b) => b.id - a.id
-	);
-}
 
 export default function Posts({
 	initialPosts,
@@ -20,7 +12,7 @@ export default function Posts({
 	session
 }: {
 	initialPosts: PostData[];
-	loadPosts: LoadMoreAction<PostData[]>;
+	loadPosts: LoadMoreAction<'none', PostData[]>;
 	session: Session;
 }) {
 	const [posts, setPosts] = useState(initialPosts);
@@ -28,14 +20,14 @@ export default function Posts({
 
 	// On new post and revalidation, get the new post from initialPosts and merge
 	useEffect(() => {
-		setPosts((prev) => uniquePosts(initialPosts, prev));
+		setPosts((prev) => uniqueArray(initialPosts, prev));
 	}, [initialPosts]);
 
 	const loadMore = async (offset: number) => {
-		const { data, hasMoreData } = await loadPosts(offset);
+		const { data, hasMoreData } = await loadPosts({ offset });
 
 		setHasMore(hasMoreData);
-		setPosts((prev) => uniquePosts(prev, data));
+		setPosts((prev) => uniqueArray(prev, data));
 	};
 
 	return (

@@ -9,13 +9,17 @@ import { Spinner } from '@nextui-org/spinner';
 export function InfiniteScroll({
 	children,
 	hasMore,
-	loadMoreAction
+	loadMoreAction,
+	startingPage = 1,
+	loaderMargin = true
 }: React.PropsWithChildren<{
 	hasMore: boolean;
 	loadMoreAction: (offset: number) => Promise<void>;
+	startingPage?: number;
+	loaderMargin?: boolean;
 }>) {
-	const ref = useRef<HTMLDivElement>(null);
-	const pageNum = useRef(1);
+	const ref = useRef<HTMLInputElement>(null);
+	const pageNum = useRef(startingPage);
 	const [loading, setLoading] = useState(false);
 
 	const loadMore = useCallback(
@@ -56,13 +60,13 @@ export function InfiniteScroll({
 	return (
 		<>
 			{children}
-			<div className="flex justify-center my-6">
+			<div className={`flex justify-center ${loaderMargin ? 'mb-6 mt-2' : ''}`}>
 				<Spinner
 					color="success"
 					label="Loading..."
-					className={loading ? 'opacity-100' : 'opacity-0'}
-					ref={ref}
+					className={loading ? 'inline-flex' : 'hidden'}
 				/>
+				<input type="button" className="w-0 h-0" ref={ref} />
 			</div>
 		</>
 	);

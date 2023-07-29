@@ -1,10 +1,9 @@
-import Posts from './(post)/Posts';
+import Posts from './Posts';
 import Create from './Create';
-import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { type LoadMoreAction, type PostData, prisma } from '@/utils';
 
-export const loadPosts: LoadMoreAction<PostData[]> = async (offset: number = 0) => {
+export const loadPosts: LoadMoreAction<'none', PostData[]> = async ({ offset = 0 }) => {
 	'use server';
 
 	const POST_SIZE = 10;
@@ -20,19 +19,12 @@ export const loadPosts: LoadMoreAction<PostData[]> = async (offset: number = 0) 
 
 export default async function Home() {
 	const session = await auth();
+	const { data: initialPosts } = await loadPosts({});
 
-	if (session) {
-		const { data: initialPosts } = await loadPosts();
-
-		return (
-			<main className="flex flex-col flex-wrap content-center items-center gap-6">
-				<Create />
-				<div className="max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl">
-					<Posts initialPosts={initialPosts} session={session} loadPosts={loadPosts} />
-				</div>
-			</main>
-		);
-	} else {
-		redirect('/auth/login');
-	}
+	return (
+		<main className="flex flex-col flex-wrap content-center items-center gap-6">
+			<Create />
+			<Posts initialPosts={initialPosts} session={session} loadPosts={loadPosts} />
+		</main>
+	);
 }

@@ -12,7 +12,7 @@ import {
 } from '@nextui-org/react';
 import { IconPencilPlus, IconSend } from '@tabler/icons-react';
 import { useState, useTransition } from 'react';
-import { createPost } from './actions';
+import { createPost } from '@/actions';
 
 export default function Create() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
