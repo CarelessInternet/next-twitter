@@ -3,8 +3,8 @@
 import { auth } from '@/auth';
 import { type LikeData, type LoadMoreAction, prisma } from '@/utils';
 
-export const likeList: LoadMoreAction<'id', LikeData[]> = async ({ offset = 0, id }) => {
-	if (typeof id !== 'number') {
+export const likeList: LoadMoreAction<'id', LikeData[]> = async ({ offset = 0, id: postId }) => {
+	if (typeof postId !== 'number') {
 		throw new Error('Id must be specified (as a number)');
 	}
 
@@ -15,13 +15,16 @@ export const likeList: LoadMoreAction<'id', LikeData[]> = async ({ offset = 0, i
 	}
 
 	const LIKE_SIZE = 10;
-	const data = await prisma.like.findMany({
-		where: { postId: id },
-		include: { user: true },
-		orderBy: { createdAt: 'desc' },
-		skip: offset * LIKE_SIZE,
-		take: LIKE_SIZE
-	});
+	const [data, count] = await prisma.$transaction([
+		prisma.like.findMany({
+			where: { postId },
+			include: { user: true },
+			orderBy: { createdAt: 'desc' },
+			skip: offset * LIKE_SIZE,
+			take: LIKE_SIZE
+		}),
+		prisma.like.count({ where: { postId } })
+	]);
 
-	return { data, hasMoreData: data.length >= LIKE_SIZE };
+	return { data, hasMoreData: data.length >= LIKE_SIZE, count };
 };

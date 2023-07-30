@@ -10,28 +10,23 @@ export function InfiniteScroll({
 	children,
 	hasMore,
 	loadMoreAction,
-	startingPage = 1,
 	loaderMargin = true
 }: React.PropsWithChildren<{
 	hasMore: boolean;
-	loadMoreAction: (offset: number) => Promise<void>;
-	startingPage?: number;
+	loadMoreAction: () => Promise<void>;
 	loaderMargin?: boolean;
 }>) {
 	const ref = useRef<HTMLInputElement>(null);
-	const pageNum = useRef(startingPage);
 	const [loading, setLoading] = useState(false);
 
 	const loadMore = useCallback(
 		(abortController: AbortController) => {
 			if (!abortController.signal.aborted && hasMore && !loading) {
 				setLoading(true);
-
-				loadMoreAction(pageNum.current).finally(() => setLoading(false));
-				pageNum.current += 1;
+				loadMoreAction().finally(() => setLoading(false));
 			}
 		},
-		[loadMoreAction, hasMore, loading, pageNum]
+		[loadMoreAction, hasMore, loading]
 	);
 
 	useEffect(() => {

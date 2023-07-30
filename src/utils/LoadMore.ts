@@ -8,7 +8,6 @@ type LoadMoreActionParameters = {
 };
 
 export type LoadMoreAction<T extends LoadMoreRequiredOptions, K extends Object[] = Object[]> = (
-	// parameters: Partial<LoadMoreActionParameters>
 	parameters: T extends 'id'
 		? WithRequired<LoadMoreActionParameters, 'id'>
 		: T extends 'none'
@@ -17,4 +16,5 @@ export type LoadMoreAction<T extends LoadMoreRequiredOptions, K extends Object[]
 ) => Promise<{
 	data: K;
 	hasMoreData: boolean;
+	count?: number;
 }>;

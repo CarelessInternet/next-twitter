@@ -1,7 +1,7 @@
 'use client';
 
 import { Post } from '@/components';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { InfiniteScroll } from '@/components';
 import { uniqueArray, type LoadMoreAction, type PostData } from '@/utils';
 import type { Session } from 'next-auth';
@@ -17,15 +17,17 @@ export default function Posts({
 }) {
 	const [posts, setPosts] = useState(initialPosts);
 	const [hasMore, setHasMore] = useState(true);
+	const pageNumber = useRef(1);
 
 	// On new post and revalidation, get the new post from initialPosts and merge
 	useEffect(() => {
 		setPosts((prev) => uniqueArray(initialPosts, prev));
 	}, [initialPosts]);
 
-	const loadMore = async (offset: number) => {
-		const { data, hasMoreData } = await loadPosts({ offset });
+	const loadMore = async () => {
+		const { data, hasMoreData } = await loadPosts({ offset: pageNumber.current });
 
+		pageNumber.current += 1;
 		setHasMore(hasMoreData);
 		setPosts((prev) => uniqueArray(prev, data));
 	};

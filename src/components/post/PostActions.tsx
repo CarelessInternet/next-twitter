@@ -14,7 +14,12 @@ import {
 	ModalHeader,
 	useDisclosure
 } from '@nextui-org/react';
-import { IconDiscountCheckFilled, IconDots, IconMessageHeart } from '@tabler/icons-react';
+import {
+	IconDiscountCheckFilled,
+	IconDots,
+	IconMessageHeart,
+	IconRefresh
+} from '@tabler/icons-react';
 import {
 	getRelativeTime,
 	uniqueArray,
@@ -22,7 +27,7 @@ import {
 	type LoadMoreAction,
 	type PostData
 } from '@/utils';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { InfiniteScroll } from '../';
 
 export default function PostActions({
@@ -35,10 +40,17 @@ export default function PostActions({
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const [likes, setLikes] = useState<LikeData[]>([]);
 	const [hasMore, setHasMore] = useState(true);
+	const [likeCount, setLikeCount] = useState(post.likes.length);
+	const pageNumber = useRef(0);
 
-	const loadMore = async (offset: number) => {
-		const { data, hasMoreData } = await loadLikes({ offset, id: post.id });
+	const loadMore = async () => {
+		const { data, hasMoreData, count } = await loadLikes({
+			offset: pageNumber.current,
+			id: post.id
+		});
 
+		pageNumber.current += 1;
+		setLikeCount(count!);
 		setHasMore(hasMoreData);
 		setLikes((prev) => uniqueArray(prev, data));
 	};
@@ -72,16 +84,11 @@ export default function PostActions({
 					{(onClose) => (
 						<>
 							<ModalHeader className="pb-2 px-4">
-								{likes.length} {likes.length !== 1 ? 'People' : 'Person'} Who Liked This Post
+								{likeCount} {likeCount !== 1 ? 'People' : 'Person'} Who Liked This Post
 							</ModalHeader>
 							<ModalBody className="px-2 py-0">
 								<ul>
-									<InfiniteScroll
-										loadMoreAction={loadMore}
-										hasMore={hasMore}
-										startingPage={0}
-										loaderMargin={false}
-									>
+									<InfiniteScroll loadMoreAction={loadMore} hasMore={hasMore} loaderMargin={false}>
 										{likes.map(({ user, createdAt }) => (
 											<li key={user.id} className="flex my-4 mx-2 gap-2">
 												<Avatar src={user.image!} name={user.name!} alt={user.name!} size="md" />
@@ -106,7 +113,20 @@ export default function PostActions({
 									</InfiniteScroll>
 								</ul>
 							</ModalBody>
-							<ModalFooter className="pt-2">
+							<ModalFooter className="pt-2 justify-between">
+								<Button
+									color="secondary"
+									variant="ghost"
+									startContent={<IconRefresh />}
+									onPress={() => {
+										pageNumber.current = 0;
+
+										setLikes([]);
+										setHasMore(true);
+									}}
+								>
+									Refresh
+								</Button>
 								<Button color="danger" variant="flat" onPress={onClose}>
 									Close
 								</Button>
