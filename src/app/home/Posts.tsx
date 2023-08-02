@@ -19,9 +19,11 @@ export default function Posts({
 	const [hasMore, setHasMore] = useState(true);
 	const pageNumber = useRef(1);
 
-	// On new post and revalidation, get the new post from initialPosts and merge
+	// On revalidation, reset data
 	useEffect(() => {
-		setPosts((prev) => uniqueArray(initialPosts, prev));
+		pageNumber.current = 1;
+		setHasMore(true);
+		setPosts(initialPosts);
 	}, [initialPosts]);
 
 	const loadMore = async () => {
@@ -29,13 +31,15 @@ export default function Posts({
 
 		pageNumber.current += 1;
 		setHasMore(hasMoreData);
-		setPosts((prev) => uniqueArray(prev, data));
+		setPosts((prev) => uniqueArray(data, prev));
 	};
 
 	return (
 		<InfiniteScroll loadMoreAction={loadMore} hasMore={hasMore}>
 			{posts.map((post) => (
-				<Post key={post.id} post={post} session={session} />
+				<div key={post.id} className="mb-8">
+					<Post key={post.id} post={post} session={session} />
+				</div>
 			))}
 		</InfiniteScroll>
 	);

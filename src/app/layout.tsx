@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
 	title: 'Next Twitter',
-	description: 'The new Twitter, for the next generations.',
+	description: 'The new Twitter, for the next generation.',
 	colorScheme: 'dark',
 	themeColor: {
 		media: '(prefers-color-scheme: dark)',

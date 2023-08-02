@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import PostActions from './PostActions';
-import PostFooter from './Footer';
+import PostFooter from './PostFooter';
 import { Card, CardBody, CardHeader } from '@nextui-org/card';
 import { Divider } from '@nextui-org/divider';
 import { IconDiscountCheckFilled } from '@tabler/icons-react';
@@ -19,7 +19,7 @@ export function Post({
 	link?: boolean;
 }) {
 	return (
-		<Card className="bg-zinc-400/10 mb-6">
+		<Card className="bg-zinc-400/10">
 			<CardHeader className="flex justify-between">
 				<div className="flex flex-row items-center gap-2">
 					<Image

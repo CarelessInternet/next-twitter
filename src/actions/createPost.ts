@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { auth } from '@/auth';
 import { type PostData, prisma } from '@/utils';
 
-export async function createPost(content?: PostData['content']) {
+export async function createPost(content: PostData['content']) {
 	const session = await auth();
 
 	if (!session) {

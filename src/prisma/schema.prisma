@@ -26,8 +26,7 @@ model Account {
   scope             String?
   id_token          String? @map("idToken") @db.Text
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -52,25 +51,28 @@ model VerificationToken {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
-  verified      Boolean   @default(false)
+  verified      Boolean     @default(false)
   accounts      Account[]
   sessions      Session[]
   posts         Post[]
   likes         Like[]
+  replies       Reply[]
+  replyLikes    ReplyLike[]
 }
 
 model Post {
   id        Int      @id @default(autoincrement())
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
-  content   String   @db.Text
+  content   String   @db.VarChar(500)
   createdAt DateTime @default(now())
   likes     Like[]
+  replies   Reply[]
 
   @@index([authorId])
 }
@@ -85,4 +87,32 @@ model Like {
 
   @@index(userId)
   @@index(postId)
+}
+
+// Deeply nested replies are possible, but selecting them are not supported as of 31/07/23
+// https://github.com/prisma/prisma/issues/3725
+model Reply {
+  id        Int         @id @default(autoincrement())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  content   String      @db.VarChar(500)
+  postId    Int
+  post      Post        @relation(fields: [postId], references: [id])
+  createdAt DateTime    @default(now())
+  likes     ReplyLike[]
+
+  @@index(userId)
+  @@index(postId)
+}
+
+model ReplyLike {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  replyId   Int
+  reply     Reply    @relation(fields: [replyId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index(userId)
+  @@index(replyId)
 }

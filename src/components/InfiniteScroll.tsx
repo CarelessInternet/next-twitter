@@ -53,7 +53,7 @@ export function InfiniteScroll({
 	}, [loadMore, loading]);
 
 	return (
-		<>
+		<div>
 			{children}
 			<div className={`flex justify-center ${loaderMargin ? 'mb-6 mt-2' : ''}`}>
 				<Spinner
@@ -63,6 +63,6 @@ export function InfiniteScroll({
 				/>
 				<input type="button" className="w-0 h-0" ref={ref} />
 			</div>
-		</>
+		</div>
 	);
 }

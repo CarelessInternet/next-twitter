@@ -6,6 +6,7 @@ import {
 	Dropdown,
 	DropdownItem,
 	DropdownMenu,
+	DropdownSection,
 	DropdownTrigger,
 	Modal,
 	ModalBody,
@@ -18,35 +19,40 @@ import {
 	IconDiscountCheckFilled,
 	IconDots,
 	IconMessageHeart,
-	IconRefresh
+	IconRefresh,
+	IconTrash
 } from '@tabler/icons-react';
 import {
 	getRelativeTime,
 	uniqueArray,
-	type LikeData,
 	type LoadMoreAction,
-	type PostData
+	type ReplyData,
+	type ReplyLikeData
 } from '@/utils';
-import { useRef, useState } from 'react';
+import { deleteReply } from '@/actions';
+import { startTransition, useRef, useState } from 'react';
 import { InfiniteScroll } from '../';
+import type { Session } from 'next-auth';
 
-export default function PostActions({
-	post,
-	loadLikes
+export default function ReplyActions({
+	reply,
+	loadLikes,
+	session
 }: {
-	post: PostData;
-	loadLikes: LoadMoreAction<'id', LikeData[]>;
+	reply: ReplyData;
+	loadLikes: LoadMoreAction<'id', ReplyLikeData[]>;
+	session: Session;
 }) {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
-	const [likes, setLikes] = useState<LikeData[]>([]);
+	const [likes, setLikes] = useState<ReplyLikeData[]>([]);
 	const [hasMore, setHasMore] = useState(true);
-	const [likeCount, setLikeCount] = useState(post.likes.length);
+	const [likeCount, setLikeCount] = useState(reply.likes.length);
 	const pageNumber = useRef(0);
 
 	const loadMore = async () => {
 		const { data, hasMoreData, count } = await loadLikes({
 			offset: pageNumber.current,
-			id: post.id
+			id: reply.id
 		});
 
 		pageNumber.current += 1;
@@ -61,15 +67,37 @@ export default function PostActions({
 				<DropdownTrigger>
 					<IconDots />
 				</DropdownTrigger>
-				<DropdownMenu aria-label="Post actions" variant="light" color="warning">
-					<DropdownItem
-						key="likes"
-						description="See who liked the post"
-						startContent={<IconMessageHeart />}
-						onPress={onOpen}
-					>
-						Likes
-					</DropdownItem>
+				<DropdownMenu
+					aria-label="Reply actions"
+					variant="light"
+					color="warning"
+					disabledKeys={session.user.id !== reply.userId ? ['delete'] : []}
+				>
+					<DropdownSection title="Actions" showDivider>
+						<DropdownItem
+							key="likes"
+							description="See who liked the reply"
+							startContent={<IconMessageHeart />}
+							onPress={onOpen}
+						>
+							Likes
+						</DropdownItem>
+					</DropdownSection>
+					<DropdownSection aria-label="Dangerous actions">
+						<DropdownItem
+							key="delete"
+							description="Delete your reply"
+							color="danger"
+							startContent={<IconTrash />}
+							onPress={() =>
+								startTransition(() => {
+									deleteReply(reply);
+								})
+							}
+						>
+							Delete
+						</DropdownItem>
+					</DropdownSection>
 				</DropdownMenu>
 			</Dropdown>
 			<Modal
@@ -84,7 +112,7 @@ export default function PostActions({
 					{(onClose) => (
 						<>
 							<ModalHeader className="pb-2 px-4">
-								{likeCount} {likeCount !== 1 ? 'People' : 'Person'} Who Liked This Post
+								{likeCount} {likeCount !== 1 ? 'People' : 'Person'} Who Liked This Reply
 							</ModalHeader>
 							<ModalBody className="px-2 py-0">
 								<ul>
