@@ -1,9 +1,8 @@
 import Replies from './Replies';
 import { notFound } from 'next/navigation';
-import { Divider } from '@nextui-org/divider';
-import { type LoadMoreAction, prisma, type ReplyData } from '@/utils';
 import { auth } from '@/auth';
 import { Post } from '@/components';
+import { type LoadMoreAction, prisma, type ReplyData } from '@/utils';
 import type { Metadata, ResolvingMetadata } from 'next';
 
 interface Parameters {
@@ -94,7 +93,6 @@ export default async function SpecificPost({ params: { id } }: Parameters) {
 			return (
 				<main className="flex flex-col flex-wrap content-center items-center gap-4">
 					<Post post={post} session={session} link={false} />
-					<Divider className="w-[36rem] my-2" />
 					<Replies
 						initialReplies={initialReplies}
 						session={session}

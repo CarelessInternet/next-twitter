@@ -6,8 +6,8 @@ import { Spacer } from '@nextui-org/spacer';
 export default function Loading() {
 	return (
 		<div className="flex flex-col flex-wrap content-center items-center">
-			<div className="max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl">
-				{Array.from({ length: 5 }, (_, i) => i + 1).map((_, i) => (
+			<div className="w-[20rem] sm:w-[28rem] md:w-[32rem] lg:w-[36rem]">
+				{Array.from({ length: 3 }, (_, i) => i + 1).map((_, i) => (
 					<div key={i}>
 						<Card className="bg-zinc-400/10">
 							<CardHeader className="flex gap-2">
@@ -19,14 +19,14 @@ export default function Loading() {
 							</CardHeader>
 							<Divider />
 							<CardBody className="p-3">
-								<Skeleton className="min-w-[16rem] sm:min-w-[24rem] md:min-w-[28rem] lg:min-w-[32rem] h-24 rounded-lg" />
+								<Skeleton className="h-24 rounded-lg" />
 							</CardBody>
 							<Divider />
 							<CardFooter>
 								<Skeleton className="w-1/2 h-4 rounded-lg" />
 							</CardFooter>
 						</Card>
-						<Spacer y={4} />
+						<Spacer y={6} />
 					</div>
 				))}
 			</div>
