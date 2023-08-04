@@ -5,3 +5,4 @@ export { createReply } from './createReply';
 export { likeReply } from './likeReply';
 export { replyLikeList } from './replyLikeList';
 export { deleteReply } from './deleteReply';
+export { deletePost } from './deletePost';

@@ -44,7 +44,7 @@ export function Post({
 						<h5 className="text-xs text-stone-600 dark:text-stone-400">{post.author.email}</h5>
 					</div>
 				</div>
-				<PostActions post={post} loadLikes={likeList} />
+				<PostActions post={post} loadLikes={likeList} session={session} />
 			</CardHeader>
 			<Divider />
 			{link ? (

@@ -92,7 +92,7 @@ export default function ReplyActions({
 							startContent={<IconTrash />}
 							onPress={() =>
 								startTransition(() => {
-									deleteReply(reply);
+									deleteReply({ id: reply.id, postId: reply.postId });
 								})
 							}
 						>

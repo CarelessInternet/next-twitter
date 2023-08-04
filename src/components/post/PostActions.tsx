@@ -6,6 +6,7 @@ import {
 	Dropdown,
 	DropdownItem,
 	DropdownMenu,
+	DropdownSection,
 	DropdownTrigger,
 	Modal,
 	ModalBody,
@@ -18,7 +19,8 @@ import {
 	IconDiscountCheckFilled,
 	IconDots,
 	IconMessageHeart,
-	IconRefresh
+	IconRefresh,
+	IconTrash
 } from '@tabler/icons-react';
 import {
 	getRelativeTime,
@@ -27,15 +29,19 @@ import {
 	type LoadMoreAction,
 	type PostData
 } from '@/utils';
-import { useRef, useState } from 'react';
+import { startTransition, useRef, useState } from 'react';
 import { InfiniteScroll } from '../';
+import { deletePost } from '@/actions';
+import type { Session } from 'next-auth';
 
 export default function PostActions({
 	post,
-	loadLikes
+	loadLikes,
+	session
 }: {
 	post: PostData;
 	loadLikes: LoadMoreAction<'id', LikeData[]>;
+	session: Session;
 }) {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const [likes, setLikes] = useState<LikeData[]>([]);
@@ -61,15 +67,38 @@ export default function PostActions({
 				<DropdownTrigger>
 					<IconDots />
 				</DropdownTrigger>
-				<DropdownMenu aria-label="Post actions" variant="flat" color="warning">
-					<DropdownItem
-						key="likes"
-						description="See who liked the post"
-						startContent={<IconMessageHeart />}
-						onPress={onOpen}
-					>
-						Likes
-					</DropdownItem>
+				<DropdownMenu
+					aria-label="Post actions"
+					variant="flat"
+					color="warning"
+					disabledKeys={session.user.id !== post.authorId ? ['delete'] : []}
+				>
+					<DropdownSection title="Actions" showDivider>
+						<DropdownItem
+							key="likes"
+							description="See who liked the post"
+							startContent={<IconMessageHeart />}
+							onPress={onOpen}
+						>
+							Likes
+						</DropdownItem>
+					</DropdownSection>
+					<DropdownSection aria-label="Dangerous actions">
+						<DropdownItem
+							key="delete"
+							description="Delete your post"
+							color="danger"
+							className="text-danger"
+							startContent={<IconTrash />}
+							onPress={() =>
+								startTransition(() => {
+									deletePost(post.id);
+								})
+							}
+						>
+							Delete
+						</DropdownItem>
+					</DropdownSection>
 				</DropdownMenu>
 			</Dropdown>
 			<Modal

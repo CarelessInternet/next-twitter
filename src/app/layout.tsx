@@ -1,6 +1,6 @@
 import './globals.css';
-import { Header } from '@/components';
 import { Providers } from './Providers';
+import { Header } from '@/components';
 import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
