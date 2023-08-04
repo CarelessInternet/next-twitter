@@ -11,18 +11,22 @@ export default async function Homepage() {
 		<main className="flex flex-col items-center">
 			<section className="h-[80vh] flex flex-col justify-center">
 				<div className="inline-block text-center">
-					<h1 className="text-4xl font-bold tracking-tight inline text-gray-100">Your </h1>
-					<h1 className="text-4xl font-bold tracking-tight inline text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-pink-500">
+					<h1 className="text-4xl font-bold tracking-tight inline text-gray-800 dark:text-gray-100">
+						Your{' '}
+					</h1>
+					<h1 className="text-4xl font-bold tracking-tight inline text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-pink-500">
 						ideal Twitter{' '}
 					</h1>
-					<h1 className="text-4xl font-bold tracking-tight inline text-gray-100">for the </h1>
+					<h1 className="text-4xl font-bold tracking-tight inline text-gray-800 dark:text-gray-100">
+						for the{' '}
+					</h1>
 					<h1 className="text-4xl font-bold tracking-tight inline text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-sky-500">
 						modern web
 					</h1>
 				</div>
 				<Spacer y={4} />
 				<div className="text-center">
-					<p className="text-medium text-gray-400">
+					<p className="text-medium text-gray-600 dark:text-gray-400">
 						Are you tired of Elon Musk messing up with Twitter? Well, you are in luck! Welcome to
 						your new home!
 					</p>

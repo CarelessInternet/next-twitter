@@ -1,5 +1,5 @@
 import Replies from './Replies';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { Post } from '@/components';
 import { type LoadMoreAction, prisma, type ReplyData } from '@/utils';
@@ -76,35 +76,40 @@ export const loadReplies: LoadMoreAction<'id', ReplyData[]> = async ({
 };
 
 export default async function SpecificPost({ params: { id } }: Parameters) {
-	if (Number.isInteger(Number(id))) {
-		const session = await auth();
-		const post = await prisma.post.findUnique({
-			where: { id: Number(id) },
-			include: {
-				author: true,
-				likes: true,
-				replies: true
-			}
-		});
-
-		if (post) {
-			const { data: initialReplies } = await loadReplies({ id: post.id });
-
-			return (
-				<main className="flex flex-col flex-wrap content-center items-center gap-4">
-					<Post post={post} session={session} link={false} />
-					<Replies
-						initialReplies={initialReplies}
-						session={session}
-						loadReplies={loadReplies}
-						postId={post.id}
-					/>
-				</main>
-			);
-		} else {
-			notFound();
-		}
-	} else {
+	if (!Number.isInteger(Number(id))) {
 		notFound();
 	}
+
+	const session = await auth();
+
+	if (!session) {
+		redirect('/auth/login');
+	}
+
+	const post = await prisma.post.findUnique({
+		where: { id: Number(id) },
+		include: {
+			author: true,
+			likes: true,
+			replies: true
+		}
+	});
+
+	if (!post) {
+		notFound();
+	}
+
+	const { data: initialReplies } = await loadReplies({ id: post.id });
+
+	return (
+		<main className="flex flex-col flex-wrap content-center items-center gap-4">
+			<Post post={post} session={session} link={false} />
+			<Replies
+				initialReplies={initialReplies}
+				session={session}
+				loadReplies={loadReplies}
+				postId={post.id}
+			/>
+		</main>
+	);
 }

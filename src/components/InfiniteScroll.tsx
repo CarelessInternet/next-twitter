@@ -3,7 +3,7 @@
 
 'use client';
 
-import { useRef, useEffect, useCallback, useState } from 'react';
+import { useRef, useEffect, useCallback, useState, type PropsWithChildren } from 'react';
 import { Spinner } from '@nextui-org/spinner';
 
 export function InfiniteScroll({
@@ -11,7 +11,7 @@ export function InfiniteScroll({
 	hasMore,
 	loadMoreAction,
 	loaderMargin = true
-}: React.PropsWithChildren<{
+}: PropsWithChildren<{
 	hasMore: boolean;
 	loadMoreAction: () => Promise<void>;
 	loaderMargin?: boolean;

@@ -28,17 +28,17 @@ export function Reply({ reply, session }: { reply: ReplyData; session: Session }
 							{reply.user.verified && (
 								<IconDiscountCheckFilled width={18} height={18} className="text-sky-600" />
 							)}
-							<h5 className="text-small text-stone-400">{`· ${getRelativeTime(
+							<h5 className="text-small text-stone-600 dark:text-stone-400">{`· ${getRelativeTime(
 								reply.createdAt
 							)}`}</h5>
 						</div>
-						<h5 className="text-xs text-stone-400">{reply.user.email}</h5>
+						<h5 className="text-xs text-stone-600 dark:text-stone-400">{reply.user.email}</h5>
 					</div>
 				</div>
 				<ReplyActions reply={reply} loadLikes={replyLikeList} session={session} />
 			</CardHeader>
 			<Divider />
-			<CardBody className="text-small text-default-700 p-3 whitespace-pre-wrap w-64 sm:w-[24rem] md:w-[28rem] lg:w-[32rem]">
+			<CardBody className="text-small text-default-900 p-3 whitespace-pre-wrap w-64 sm:w-[24rem] md:w-[28rem] lg:w-[32rem]">
 				{reply.content}
 			</CardBody>
 			<Divider />

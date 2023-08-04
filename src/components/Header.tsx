@@ -1,5 +1,6 @@
 'use client';
 
+import NextLink from 'next/link';
 import {
 	Button,
 	Dropdown,
@@ -13,13 +14,58 @@ import {
 	NavbarItem,
 	NavbarMenu,
 	NavbarMenuItem,
-	NavbarMenuToggle
+	NavbarMenuToggle,
+	VisuallyHidden,
+	useSwitch
 } from '@nextui-org/react';
 import { usePathname, useRouter } from 'next/navigation';
-import { IconBrandGithub, IconLogin, IconLogout } from '@tabler/icons-react';
+import {
+	IconBrandGithub,
+	IconBrandVercel,
+	IconLogin,
+	IconLogout,
+	IconMoon,
+	IconSun
+} from '@tabler/icons-react';
 import { signOut, useSession } from 'next-auth/react';
-import NextLink from 'next/link';
-import Image from 'next/image';
+import { useTheme } from 'next-themes';
+import { useIsSSR } from '@react-aria/ssr';
+
+function ThemeSwitch() {
+	const { theme, setTheme } = useTheme();
+	const isSSR = useIsSSR();
+
+	const onChange = () => {
+		setTheme(theme === 'light' ? 'dark' : 'light');
+	};
+
+	const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } = useSwitch({
+		isSelected: theme === 'light',
+		'aria-label': `Switch to ${theme === 'light' ? 'dark' : 'light'} mode`,
+		onChange
+	});
+
+	return (
+		<Component {...getBaseProps()}>
+			<VisuallyHidden>
+				<input {...getInputProps()} />
+			</VisuallyHidden>
+			<div
+				{...getWrapperProps()}
+				className={slots.wrapper({
+					class: [
+						'w-8 h-8 mx-0 px-0',
+						'flex items-center justify-center',
+						'bg-transparent !text-default-700 hover:opacity-80',
+						'group-data-[selected=true]:bg-transparent'
+					]
+				})}
+			>
+				{!isSelected || isSSR ? <IconSun /> : <IconMoon />}
+			</div>
+		</Component>
+	);
+}
 
 export function Header() {
 	const pathname = usePathname();
@@ -91,8 +137,8 @@ export function Header() {
 			<NavbarContent>
 				<NavbarItem>
 					<NavbarBrand>
-						<Image src="/vercel.png" width={64} height={64} alt="vercel" />
-						<div className="text-lg">
+						<IconBrandVercel width={48} height={48} />
+						<div className="text-lg ml-2">
 							<CustomLink href="/" text="Next Twitter" />
 						</div>
 					</NavbarBrand>
@@ -110,6 +156,9 @@ export function Header() {
 				</NavbarItem>
 			</NavbarContent>
 			<NavbarContent justify="end">
+				<NavbarItem>
+					<ThemeSwitch />
+				</NavbarItem>
 				<NavbarItem className="text-3xl">
 					<Link
 						isExternal

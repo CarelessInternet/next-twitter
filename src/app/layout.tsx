@@ -1,8 +1,9 @@
 import './globals.css';
 import { Header } from '@/components';
-import { Providers } from './providers';
+import { Providers } from './Providers';
 import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
+import type { PropsWithChildren } from 'react';
 
 export const metadata: Metadata = {
 	title: 'Next Twitter',
@@ -19,9 +20,9 @@ export const metadata: Metadata = {
 	)
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: PropsWithChildren) {
 	return (
-		<html lang="en" className="dark">
+		<html lang="en" className="dark" suppressHydrationWarning>
 			<body>
 				<Providers>
 					<Header />

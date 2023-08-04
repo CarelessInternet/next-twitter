@@ -69,7 +69,7 @@ export default function ReplyActions({
 				</DropdownTrigger>
 				<DropdownMenu
 					aria-label="Reply actions"
-					variant="light"
+					variant="flat"
 					color="warning"
 					disabledKeys={session.user.id !== reply.userId ? ['delete'] : []}
 				>
@@ -88,6 +88,7 @@ export default function ReplyActions({
 							key="delete"
 							description="Delete your reply"
 							color="danger"
+							className="text-danger"
 							startContent={<IconTrash />}
 							onPress={() =>
 								startTransition(() => {
@@ -130,11 +131,13 @@ export default function ReplyActions({
 																className="text-sky-600"
 															/>
 														)}
-														<h5 className="text-small text-stone-400">{`· ${getRelativeTime(
+														<h5 className="text-small text-stone-600 dark:text-stone-400">{`· ${getRelativeTime(
 															createdAt
 														)}`}</h5>
 													</div>
-													<h5 className="text-xs text-stone-400">{user.email}</h5>
+													<h5 className="text-xs text-stone-600 dark:text-stone-400">
+														{user.email}
+													</h5>
 												</div>
 											</li>
 										))}

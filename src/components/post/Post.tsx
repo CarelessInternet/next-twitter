@@ -37,11 +37,11 @@ export function Post({
 							{post.author.verified && (
 								<IconDiscountCheckFilled width={18} height={18} className="text-sky-600" />
 							)}
-							<h5 className="text-small text-stone-400">{`· ${getRelativeTime(
+							<h5 className="text-small text-stone-600 dark:text-stone-400">{`· ${getRelativeTime(
 								post.createdAt
 							)}`}</h5>
 						</div>
-						<h5 className="text-xs text-stone-400">{post.author.email}</h5>
+						<h5 className="text-xs text-stone-600 dark:text-stone-400">{post.author.email}</h5>
 					</div>
 				</div>
 				<PostActions post={post} loadLikes={likeList} />
@@ -49,12 +49,12 @@ export function Post({
 			<Divider />
 			{link ? (
 				<Link href={`/home/post/${post.id}`}>
-					<CardBody className="text-small text-default-700 p-3 whitespace-pre-wrap w-80 sm:w-[28rem] md:w-[32rem] lg:w-[36rem]">
+					<CardBody className="text-small text-default-900 p-3 whitespace-pre-wrap w-80 sm:w-[28rem] md:w-[32rem] lg:w-[36rem]">
 						{post.content}
 					</CardBody>
 				</Link>
 			) : (
-				<CardBody className="text-small text-default-700 p-3 whitespace-pre-wrap w-80 sm:w-[28rem] md:w-[32rem] lg:w-[36rem]">
+				<CardBody className="text-small text-default-900 p-3 whitespace-pre-wrap w-80 sm:w-[28rem] md:w-[32rem] lg:w-[36rem]">
 					{post.content}
 				</CardBody>
 			)}

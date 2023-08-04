@@ -1,5 +1,6 @@
 import Posts from './Posts';
 import Create from './Create';
+import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { type LoadMoreAction, type PostData, prisma } from '@/utils';
 
@@ -19,6 +20,11 @@ export const loadPosts: LoadMoreAction<'none', PostData[]> = async ({ offset = 0
 
 export default async function Home() {
 	const session = await auth();
+
+	if (!session) {
+		redirect('/auth/login');
+	}
+
 	const { data: initialPosts } = await loadPosts({});
 
 	return (
