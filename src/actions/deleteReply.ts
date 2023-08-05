@@ -20,7 +20,6 @@ export async function deleteReply({ id, postId }: Pick<ReplyData, 'id' | 'postId
 	});
 
 	if (replyAuthor) {
-		await prisma.replyLike.deleteMany({ where: { replyId: id } });
 		await prisma.reply.delete({ where: { id } });
 
 		revalidatePath(`/home/post/${postId}`);

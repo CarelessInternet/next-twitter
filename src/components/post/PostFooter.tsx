@@ -52,7 +52,7 @@ export default function PostFooter({ post, session }: { post: PostData; session:
 					startContent={<IconMessageCircle />}
 					onPress={onOpen}
 				>
-					{post.replies.length}
+					{post._count.replies}
 				</Button>
 				<Modal
 					isOpen={isOpen}

@@ -6,7 +6,11 @@ export * from './uniqueArray';
 export * from './LoadMore';
 
 export type PostData = Prisma.PostGetPayload<{
-	include: { author: true; likes: true; replies: true };
+	include: {
+		author: true;
+		likes: true;
+		_count: { select: { replies: true } };
+	};
 }>;
 
 export type LikeData = Prisma.LikeGetPayload<{

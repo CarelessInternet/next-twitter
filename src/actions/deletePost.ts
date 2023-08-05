@@ -20,9 +20,6 @@ export async function deletePost(id: PostData['id']) {
 	});
 
 	if (postAuthor) {
-		await prisma.replyLike.deleteMany({ where: { reply: { postId: id } } });
-		await prisma.reply.deleteMany({ where: { postId: id } });
-		await prisma.like.deleteMany({ where: { postId: id } });
 		await prisma.post.delete({ where: { id } });
 
 		revalidatePath(`/home/post/${id}`);

@@ -2,6 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 // https://next-auth.js.org/adapters/prisma
+// NextAuth's database schema: https://github.com/nextauthjs/next-auth/blob/main/packages/adapter-prisma/prisma/schema.prisma
 
 generator client {
   provider = "prisma-client-js"
@@ -14,7 +15,6 @@ datasource db {
 }
 
 model Account {
-  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
@@ -33,7 +33,6 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
@@ -46,8 +45,6 @@ model VerificationToken {
   identifier String
   token      String   @unique
   expires    DateTime
-
-  @@unique([identifier, token])
 }
 
 model User {
@@ -82,7 +79,7 @@ model Like {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   postId    Int
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
   @@index(userId)
@@ -97,7 +94,7 @@ model Reply {
   user      User        @relation(fields: [userId], references: [id])
   content   String      @db.VarChar(500)
   postId    Int
-  post      Post        @relation(fields: [postId], references: [id])
+  post      Post        @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdAt DateTime    @default(now())
   likes     ReplyLike[]
 
@@ -110,7 +107,7 @@ model ReplyLike {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   replyId   Int
-  reply     Reply    @relation(fields: [replyId], references: [id])
+  reply     Reply    @relation(fields: [replyId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
   @@index(userId)

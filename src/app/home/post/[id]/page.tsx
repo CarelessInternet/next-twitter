@@ -64,6 +64,7 @@ export const loadReplies: LoadMoreAction<'id', ReplyData[]> = async ({
 	}
 
 	const REPLY_SIZE = 10;
+
 	const data = await prisma.reply.findMany({
 		where: { postId },
 		include: { user: true, likes: true },
@@ -91,7 +92,7 @@ export default async function SpecificPost({ params: { id } }: Parameters) {
 		include: {
 			author: true,
 			likes: true,
-			replies: true
+			_count: { select: { replies: true } }
 		}
 	});
 

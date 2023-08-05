@@ -8,8 +8,13 @@ export const loadPosts: LoadMoreAction<'none', PostData[]> = async ({ offset = 0
 	'use server';
 
 	const POST_SIZE = 10;
+
 	const data = await prisma.post.findMany({
-		include: { author: true, likes: true, replies: true },
+		include: {
+			author: true,
+			likes: true,
+			_count: { select: { replies: true } }
+		},
 		orderBy: [{ id: 'desc' }],
 		skip: offset * POST_SIZE,
 		take: POST_SIZE
