@@ -21,13 +21,6 @@ export default function Replies({
 	const [hasMore, setHasMore] = useState(true);
 	const pageNumber = useRef(1);
 
-	// On revalidation, reset data
-	useEffect(() => {
-		pageNumber.current = 1;
-		setHasMore(true);
-		setReplies(initialReplies);
-	}, [initialReplies]);
-
 	const loadMore = async () => {
 		const { data, hasMoreData } = await loadReplies({ offset: pageNumber.current, id });
 

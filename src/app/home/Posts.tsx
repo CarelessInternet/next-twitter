@@ -19,13 +19,6 @@ export default function Posts({
 	const [hasMore, setHasMore] = useState(true);
 	const pageNumber = useRef(1);
 
-	// On revalidation, reset data
-	useEffect(() => {
-		pageNumber.current = 1;
-		setHasMore(true);
-		setPosts(initialPosts);
-	}, [initialPosts]);
-
 	const loadMore = async () => {
 		const { data, hasMoreData } = await loadPosts({ offset: pageNumber.current });
 

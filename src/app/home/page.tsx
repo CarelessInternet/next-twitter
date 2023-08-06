@@ -13,6 +13,8 @@ export const loadPosts: LoadMoreAction<'none', PostData[]> = async ({ offset = 0
 		include: {
 			author: true,
 			likes: true,
+			reposts: true,
+			originalPost: { include: { author: true } },
 			_count: { select: { replies: true } }
 		},
 		orderBy: [{ id: 'desc' }],
@@ -35,7 +37,12 @@ export default async function Home() {
 	return (
 		<main className="flex flex-col flex-wrap content-center items-center gap-6">
 			<Create />
-			<Posts initialPosts={initialPosts} session={session} loadPosts={loadPosts} />
+			<Posts
+				key={new Date().getTime()}
+				initialPosts={initialPosts}
+				session={session}
+				loadPosts={loadPosts}
+			/>
 		</main>
 	);
 }

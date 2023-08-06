@@ -15,30 +15,40 @@ import {
 	IconBlockquote,
 	IconHeart,
 	IconHeartFilled,
+	IconMessageCheck,
 	IconMessageCircle,
 	IconMessagePlus
 } from '@tabler/icons-react';
 import { experimental_useOptimistic as useOptimistic, useState, useTransition } from 'react';
 import { redirect, usePathname } from 'next/navigation';
-import { createReply, likePost } from '@/actions';
+import { createReply, likePost, repost } from '@/actions';
 import type { PostData } from '@/utils';
 import type { Session } from 'next-auth';
 
 export default function PostFooter({ post, session }: { post: PostData; session: Session }) {
+	// Reply
+	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+	const [replyContent, setReplyContent] = useState<string | undefined>('');
+	const [isPending, startTransition] = useTransition();
+	const pathname = usePathname();
+
+	// Repost
+	const [optimisticReposts, addOptimisticRepost] = useOptimistic(
+		{ repostCount: post.reposts.length },
+		(state, newRepostCount: number) => ({ ...state, repostCount: newRepostCount })
+	);
+	const [hasUserReposted, setHasUserReposted] = useState(
+		post.reposts.some((repost) => repost.authorId === session.user.id)
+	);
+
 	// Like
 	const [optimisticLikes, addOptimisticLike] = useOptimistic(
 		{ likeCount: post.likes.length },
 		(state, newLikeCount: number) => ({ ...state, likeCount: newLikeCount })
 	);
 	const [hasUserLiked, setHasUserLiked] = useState(
-		Boolean(post.likes.find((like) => like.userId === session.user.id))
+		post.likes.some((like) => like.userId === session.user.id)
 	);
-
-	// Reply
-	const { isOpen, onOpen, onOpenChange } = useDisclosure();
-	const [replyContent, setReplyContent] = useState<string | undefined>('');
-	const [isPending, startTransition] = useTransition();
-	const pathname = usePathname();
 
 	return (
 		<CardFooter className="flex justify-between">
@@ -119,16 +129,36 @@ export default function PostFooter({ post, session }: { post: PostData; session:
 					</ModalContent>
 				</Modal>
 			</>
-			<Button
-				isIconOnly
-				size="sm"
-				radius="full"
-				color="primary"
-				className="hover:bg-primary-500"
-				aria-label="Repost"
-			>
-				<IconBlockquote />
-			</Button>
+			{post.originalPostId ? (
+				<Button
+					size="sm"
+					radius="full"
+					color="primary"
+					aria-label="Repost"
+					isDisabled={true}
+					isIconOnly
+				>
+					<IconBlockquote />
+				</Button>
+			) : (
+				<Button
+					size="sm"
+					radius="full"
+					color="primary"
+					className="hover:bg-primary-500"
+					aria-label="Repost"
+					isDisabled={hasUserReposted}
+					startContent={hasUserReposted ? <IconMessageCheck /> : <IconBlockquote />}
+					onPress={async () => {
+						addOptimisticRepost(optimisticReposts.repostCount + (!hasUserReposted ? 1 : -1));
+						setHasUserReposted((bool) => !bool);
+
+						await repost(post.id);
+					}}
+				>
+					{optimisticReposts.repostCount}
+				</Button>
+			)}
 			<Button
 				size="sm"
 				radius="full"

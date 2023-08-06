@@ -18,12 +18,12 @@ export async function generateMetadata(
 	if (Number.isInteger(Number(id))) {
 		const post = await prisma.post.findUnique({
 			where: { id: Number(id) },
-			include: { author: true }
+			include: { author: true, originalPost: true }
 		});
 
 		if (post) {
 			const title = `${post.author.name} on Next Twitter`;
-			const description = post.content;
+			const description = post.content ?? post.originalPost?.content!;
 
 			return {
 				title,
@@ -92,6 +92,8 @@ export default async function SpecificPost({ params: { id } }: Parameters) {
 		include: {
 			author: true,
 			likes: true,
+			reposts: true,
+			originalPost: { include: { author: true } },
 			_count: { select: { replies: true } }
 		}
 	});
@@ -106,6 +108,7 @@ export default async function SpecificPost({ params: { id } }: Parameters) {
 		<main className="flex flex-col flex-wrap content-center items-center gap-4">
 			<Post post={post} session={session} link={false} />
 			<Replies
+				key={new Date().getTime()}
 				initialReplies={initialReplies}
 				session={session}
 				loadReplies={loadReplies}

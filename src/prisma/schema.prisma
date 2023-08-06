@@ -63,15 +63,19 @@ model User {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
-  content   String   @db.VarChar(500)
-  createdAt DateTime @default(now())
-  likes     Like[]
-  replies   Reply[]
+  id             Int      @id @default(autoincrement())
+  authorId       String
+  author         User     @relation(fields: [authorId], references: [id])
+  content        String?  @db.VarChar(500)
+  originalPostId Int?
+  originalPost   Post?    @relation("Repost", fields: [originalPostId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  createdAt      DateTime @default(now())
+  likes          Like[]
+  replies        Reply[]
+  reposts        Post[]   @relation("Repost")
 
-  @@index([authorId])
+  @@index(authorId)
+  @@index(originalPostId)
 }
 
 model Like {

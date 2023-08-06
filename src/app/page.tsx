@@ -1,12 +1,9 @@
 import Link from 'next/link';
 import { Button } from '@nextui-org/button';
 import { Spacer } from '@nextui-org/spacer';
-import { IconExternalLink, IconHome, IconLogin } from '@tabler/icons-react';
-import { auth } from '@/auth';
+import { IconExternalLink, IconHome } from '@tabler/icons-react';
 
 export default async function Homepage() {
-	const session = await auth();
-
 	return (
 		<main className="flex flex-col items-center">
 			<section className="h-[80vh] flex flex-col justify-center">
@@ -33,29 +30,16 @@ export default async function Homepage() {
 				</div>
 				<Spacer y={4} />
 				<div className="flex flex-row justify-center">
-					{session ? (
-						<Button
-							as={Link}
-							href="/home"
-							color="success"
-							variant="ghost"
-							className="text-medium transition ease-in-out duration-300 hover:scale-110"
-							startContent={<IconHome />}
-						>
-							Home
-						</Button>
-					) : (
-						<Button
-							as={Link}
-							href="/auth/login"
-							color="warning"
-							variant="ghost"
-							className="text-medium transition ease-in-out duration-300 hover:scale-110"
-							startContent={<IconLogin />}
-						>
-							Login
-						</Button>
-					)}
+					<Button
+						as={Link}
+						href="/home"
+						color="success"
+						variant="ghost"
+						className="text-medium transition ease-in-out duration-300 hover:scale-110"
+						startContent={<IconHome />}
+					>
+						Home
+					</Button>
 					<Spacer x={4} />
 					<Button
 						as={Link}

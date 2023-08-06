@@ -9,6 +9,8 @@ export type PostData = Prisma.PostGetPayload<{
 	include: {
 		author: true;
 		likes: true;
+		reposts: true;
+		originalPost: { include: { author: true } };
 		_count: { select: { replies: true } };
 	};
 }>;

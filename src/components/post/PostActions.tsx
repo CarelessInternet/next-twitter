@@ -19,6 +19,7 @@ import {
 	IconDiscountCheckFilled,
 	IconDots,
 	IconMessageHeart,
+	IconMessageSearch,
 	IconRefresh,
 	IconTrash
 } from '@tabler/icons-react';
@@ -33,6 +34,7 @@ import { startTransition, useRef, useState } from 'react';
 import { InfiniteScroll } from '../';
 import { deletePost } from '@/actions';
 import type { Session } from 'next-auth';
+import { useRouter } from 'next/navigation';
 
 export default function PostActions({
 	post,
@@ -48,6 +50,7 @@ export default function PostActions({
 	const [hasMore, setHasMore] = useState(true);
 	const [likeCount, setLikeCount] = useState(post.likes.length);
 	const pageNumber = useRef(0);
+	const router = useRouter();
 
 	const loadMore = async () => {
 		const { data, hasMoreData, count } = await loadLikes({
@@ -71,7 +74,10 @@ export default function PostActions({
 					aria-label="Post actions"
 					variant="flat"
 					color="warning"
-					disabledKeys={session.user.id !== post.authorId ? ['delete'] : []}
+					disabledKeys={[
+						...(session.user.id !== post.authorId ? ['delete'] : []),
+						...(!post.originalPostId ? ['original'] : [])
+					]}
 				>
 					<DropdownSection title="Actions" showDivider>
 						<DropdownItem
@@ -81,6 +87,14 @@ export default function PostActions({
 							onPress={onOpen}
 						>
 							Likes
+						</DropdownItem>
+						<DropdownItem
+							key="original"
+							description="View the original post"
+							startContent={<IconMessageSearch />}
+							onPress={() => router.push(`/home/post/${post.originalPostId}`)}
+						>
+							Original Post
 						</DropdownItem>
 					</DropdownSection>
 					<DropdownSection aria-label="Dangerous actions">

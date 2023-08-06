@@ -6,3 +6,4 @@ export { likeReply } from './likeReply';
 export { replyLikeList } from './replyLikeList';
 export { deleteReply } from './deleteReply';
 export { deletePost } from './deletePost';
+export { repost } from './repost';

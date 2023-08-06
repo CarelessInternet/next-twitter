@@ -13,7 +13,7 @@ export default function ReplyFooter({ reply, session }: { reply: ReplyData; sess
 		(state, newLikeCount: number) => ({ ...state, likeCount: newLikeCount })
 	);
 	const [hasUserLiked, setHasUserLiked] = useState(
-		Boolean(reply.likes.find((like) => like.userId === session.user.id))
+		reply.likes.some((like) => like.userId === session.user.id)
 	);
 
 	return (

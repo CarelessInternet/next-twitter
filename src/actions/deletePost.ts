@@ -3,6 +3,7 @@
 import { auth } from '@/auth';
 import { type PostData, prisma } from '@/utils';
 import { revalidatePath } from 'next/cache';
+import { headers } from 'next/headers';
 
 export async function deletePost(id: PostData['id']) {
 	const session = await auth();
@@ -20,8 +21,13 @@ export async function deletePost(id: PostData['id']) {
 	});
 
 	if (postAuthor) {
-		await prisma.post.delete({ where: { id } });
+		await prisma.$transaction([
+			prisma.post.deleteMany({ where: { originalPostId: id } }),
+			prisma.post.delete({ where: { id } })
+		]);
 
-		revalidatePath(`/home/post/${id}`);
+		const currentPath = headers().get('x-invoke-path');
+
+		revalidatePath(currentPath === `/home/post/${id}` ? `/home/post/${id}` : '/home');
 	}
 }
