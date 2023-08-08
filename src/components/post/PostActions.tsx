@@ -33,8 +33,8 @@ import {
 import { startTransition, useRef, useState } from 'react';
 import { InfiniteScroll } from '../';
 import { deletePost } from '@/actions';
-import type { Session } from 'next-auth';
 import { useRouter } from 'next/navigation';
+import type { Session } from 'next-auth';
 
 export default function PostActions({
 	post,

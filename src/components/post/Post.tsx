@@ -25,7 +25,7 @@ export function Post({
 					<div className="flex flex-row gap-1 items-center ml-5">
 						<IconMessageShare width={16} height={16} />
 						<h5 className="text-small text-stone-500 dark:text-stone-300">
-							{post.author.name} reposted:
+							{post.author.name} reposted {getRelativeTime(post.createdAt)}:
 						</h5>
 					</div>
 				)}
@@ -47,7 +47,7 @@ export function Post({
 									<IconDiscountCheckFilled width={18} height={18} className="text-sky-600" />
 								)}
 								<h5 className="text-small text-stone-600 dark:text-stone-400">{`· ${getRelativeTime(
-									post.createdAt
+									post.originalPost?.createdAt ?? post.createdAt
 								)}`}</h5>
 							</div>
 							<h5 className="text-xs text-stone-600 dark:text-stone-400">

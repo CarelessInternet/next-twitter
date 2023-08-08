@@ -1,19 +1,29 @@
+// https://blog.webdevsimplified.com/2020-07/relative-time-format/
+
+const formatter = new Intl.RelativeTimeFormat(undefined, {
+	numeric: 'auto'
+});
+
+const DIVISIONS = [
+	{ amount: 60, name: 'seconds' },
+	{ amount: 60, name: 'minutes' },
+	{ amount: 24, name: 'hours' },
+	{ amount: 7, name: 'days' },
+	{ amount: 4.34524, name: 'weeks' },
+	{ amount: 12, name: 'months' },
+	{ amount: Number.POSITIVE_INFINITY, name: 'years' }
+] as const;
+
 export function getRelativeTime(timestamp: Date) {
-	const HOUR_MILLISECONDS = 1000 * 60 * 60;
-	const DAY_MILLISECONDS = HOUR_MILLISECONDS * 24;
+	let duration = (timestamp.getTime() - new Date().getTime()) / 1000;
 
-	const rtf = new Intl.RelativeTimeFormat('en', {
-		numeric: 'auto'
-	});
+	for (let i = 0; i < DIVISIONS.length; i++) {
+		const division = DIVISIONS[i];
 
-	const hoursDifference = Math.round(
-		(timestamp.getTime() - new Date().getTime()) / HOUR_MILLISECONDS
-	);
-	const daysDifference = Math.round(
-		(timestamp.getTime() - new Date().getTime()) / DAY_MILLISECONDS
-	);
+		if (Math.abs(duration) < division.amount) {
+			return formatter.format(Math.round(duration), division.name);
+		}
 
-	return daysDifference < 0
-		? rtf.format(daysDifference, 'day')
-		: rtf.format(hoursDifference, 'hour');
+		duration /= division.amount;
+	}
 }

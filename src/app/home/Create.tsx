@@ -16,7 +16,7 @@ import { createPost } from '@/actions';
 
 export default function Create() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
-	const [tweetContent, setTweetContent] = useState<string | undefined>('');
+	const [tweetContent, setTweetContent] = useState('');
 	const [isPending, startTransition] = useTransition();
 
 	return (

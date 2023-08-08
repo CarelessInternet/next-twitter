@@ -18,7 +18,9 @@ export const likeList: LoadMoreAction<'id', LikeData[]> = async ({ offset = 0, i
 	const [data, count] = await prisma.$transaction([
 		prisma.like.findMany({
 			where: { postId },
-			include: { user: true },
+			include: {
+				user: { select: { name: true, image: true, verified: true, email: true, id: true } }
+			},
 			orderBy: { createdAt: 'desc' },
 			skip: offset * LIKE_SIZE,
 			take: LIKE_SIZE

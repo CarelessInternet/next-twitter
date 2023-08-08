@@ -18,7 +18,10 @@ export async function generateMetadata(
 	if (Number.isInteger(Number(id))) {
 		const post = await prisma.post.findUnique({
 			where: { id: Number(id) },
-			include: { author: true, originalPost: true }
+			include: {
+				author: { select: { name: true, image: true } },
+				originalPost: { select: { content: true } }
+			}
 		});
 
 		if (post) {
@@ -29,7 +32,7 @@ export async function generateMetadata(
 				title,
 				description,
 				authors: {
-					name: post.author.name ?? ''
+					name: post.author.name!
 				},
 				openGraph: {
 					title,
@@ -64,10 +67,12 @@ export const loadReplies: LoadMoreAction<'id', ReplyData[]> = async ({
 	}
 
 	const REPLY_SIZE = 10;
-
 	const data = await prisma.reply.findMany({
 		where: { postId },
-		include: { user: true, likes: true },
+		include: {
+			user: { select: { name: true, image: true, verified: true, email: true } },
+			likes: { select: { userId: true } }
+		},
 		orderBy: [{ id: 'desc' }],
 		skip: offset * REPLY_SIZE,
 		take: REPLY_SIZE
@@ -90,10 +95,12 @@ export default async function SpecificPost({ params: { id } }: Parameters) {
 	const post = await prisma.post.findUnique({
 		where: { id: Number(id) },
 		include: {
-			author: true,
-			likes: true,
-			reposts: true,
-			originalPost: { include: { author: true } },
+			author: { select: { name: true, image: true, verified: true, email: true } },
+			likes: { select: { userId: true } },
+			reposts: { select: { authorId: true } },
+			originalPost: {
+				include: { author: { select: { name: true, image: true, verified: true, email: true } } }
+			},
 			_count: { select: { replies: true } }
 		}
 	});
