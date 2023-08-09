@@ -8,7 +8,7 @@ export default function About() {
 					Twitter For You
 				</h1>
 				<h2 className="text-lg text-center px-2">
-					Sometimes, the biggest platforms aren't the best ones. They're good, but lead by people
+					Sometimes, the biggest platforms are not the best ones. They are good, but lead by people
 					not suited for the job.
 				</h2>
 			</section>
