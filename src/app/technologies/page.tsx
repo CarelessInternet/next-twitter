@@ -72,7 +72,7 @@ export default function Technologies() {
 				>
 					Planetscale
 				</Link>
-				, these two powerful backend features helped make Next Twitter possible.
+				, these two powerful backend features made Next Twitter possible.
 			</GridItem>
 			<GridItem src="/nextui.png" title="NextUI" href="https://nextui.org">
 				Finally, the component library used to make the frontend of Next Twitter is NextUI v2 with
