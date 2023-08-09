@@ -152,7 +152,7 @@ export function Header() {
 					<CustomLink href="/about" text="About" />
 				</NavbarItem>
 				<NavbarItem>
-					<CustomLink href="/technology" text="Technology" />
+					<CustomLink href="/technologies" text="Technologies" />
 				</NavbarItem>
 			</NavbarContent>
 			<NavbarContent justify="end">
@@ -181,7 +181,7 @@ export function Header() {
 					<CustomLink href="/about" text="About" />
 				</NavbarMenuItem>
 				<NavbarMenuItem>
-					<CustomLink href="/technology" text="Technology" />
+					<CustomLink href="/technologies" text="Technologies" />
 				</NavbarMenuItem>
 				<NavbarMenuItem>
 					<ProfileButton />

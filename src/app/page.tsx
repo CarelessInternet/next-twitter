@@ -6,7 +6,7 @@ import { IconExternalLink, IconHome } from '@tabler/icons-react';
 export default async function Homepage() {
 	return (
 		<main className="flex flex-col items-center">
-			<section className="h-[80vh] flex flex-col justify-center">
+			<section className="h-[85vh] flex flex-col justify-center">
 				<div className="inline-block text-center">
 					<h1 className="text-4xl font-bold tracking-tight inline text-gray-800 dark:text-gray-100">
 						Your{' '}
