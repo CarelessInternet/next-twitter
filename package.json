@@ -12,14 +12,14 @@
     "databasePush": "prisma db push --schema=./src/prisma/schema.prisma"
   },
   "dependencies": {
-    "@auth/core": "^0.10.2",
+    "@auth/core": "^0.11.1",
     "@auth/prisma-adapter": "^1.0.1",
-    "@nextui-org/react": "^2.0.11",
+    "@nextui-org/react": "^2.0.18",
     "@prisma/client": "^5.1.1",
     "@react-aria/ssr": "^3.7.1",
     "@tabler/icons-react": "^2.30.0",
     "@vercel/analytics": "^1.0.2",
-    "eslint": "^8.46.0",
+    "eslint": "^8.47.0",
     "eslint-config-next": "^13.4.13",
     "framer-motion": "^10.15.1",
     "next": "^13.4.13",
@@ -29,7 +29,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.4.9",
+    "@types/node": "^20.4.10",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "autoprefixer": "10.4.14",
