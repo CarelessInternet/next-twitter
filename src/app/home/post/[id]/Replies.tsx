@@ -1,7 +1,7 @@
 'use client';
 
 import { Reply } from '@/components';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { InfiniteScroll } from '@/components';
 import { uniqueArray, type LoadMoreAction, type ReplyData, type PostData } from '@/utils';
 import type { Session } from 'next-auth';

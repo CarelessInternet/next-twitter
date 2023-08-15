@@ -1,26 +1,27 @@
 'use client';
 
-import { Post } from '@/components';
 import { useRef, useState } from 'react';
-import { InfiniteScroll } from '@/components';
-import { uniqueArray, type LoadMoreAction, type PostData } from '@/utils';
+import { InfiniteScroll, Post } from '@/components';
+import { type LoadMoreAction, uniqueArray, type PostData } from '@/utils';
 import type { Session } from 'next-auth';
 
-export default function Posts({
+export default function UserPosts({
 	initialPosts,
 	loadPosts,
-	session
+	session,
+	userId: id
 }: {
 	initialPosts: PostData[];
-	loadPosts: LoadMoreAction<'none', PostData[]>;
+	loadPosts: LoadMoreAction<'id', PostData[]>;
 	session: Session;
+	userId: PostData['authorId'];
 }) {
 	const [posts, setPosts] = useState(initialPosts);
 	const [hasMore, setHasMore] = useState(true);
 	const pageNumber = useRef(1);
 
 	const loadMore = async () => {
-		const { data, hasMoreData } = await loadPosts({ offset: pageNumber.current });
+		const { data, hasMoreData } = await loadPosts({ offset: pageNumber.current, id });
 
 		pageNumber.current += 1;
 		setHasMore(hasMoreData);
@@ -30,8 +31,8 @@ export default function Posts({
 	return (
 		<InfiniteScroll loadMoreAction={loadMore} hasMore={hasMore}>
 			{posts.map((post) => (
-				<div key={post.id} className="mb-8">
-					<Post key={post.id} post={post} session={session} />
+				<div key={post.id} className="mb-6">
+					<Post post={post} session={session} />
 				</div>
 			))}
 		</InfiniteScroll>

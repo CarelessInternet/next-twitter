@@ -22,6 +22,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
 	IconBrandGithub,
 	IconBrandVercel,
+	IconId,
 	IconLogin,
 	IconLogout,
 	IconMoon,
@@ -91,6 +92,13 @@ export function Header() {
 							</Button>
 						</DropdownTrigger>
 						<DropdownMenu color="primary" variant="flat">
+							<DropdownItem
+								key="profile"
+								startContent={<IconId />}
+								onPress={() => router.push(`/home/user/${session.user.id}`)}
+							>
+								Profile
+							</DropdownItem>
 							<DropdownItem
 								key="login"
 								startContent={<IconLogin />}

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import PostActions from './PostActions';
 import PostFooter from './PostFooter';
 import { Card, CardBody, CardHeader } from '@nextui-org/card';
@@ -7,7 +8,6 @@ import { IconDiscountCheckFilled, IconMessageShare } from '@tabler/icons-react';
 import { likeList } from '@/actions';
 import { type PostData, getRelativeTime } from '@/utils';
 import type { Session } from 'next-auth';
-import Image from 'next/image';
 
 export function Post({
 	post,
@@ -24,9 +24,12 @@ export function Post({
 				{post.originalPostId && (
 					<div className="flex flex-row gap-1 items-center ml-5">
 						<IconMessageShare width={16} height={16} />
-						<h5 className="text-small text-stone-500 dark:text-stone-300">
+						<Link
+							href={`/home/user/${post.authorId}`}
+							className="text-small text-stone-500 dark:text-stone-300"
+						>
 							{post.author.name} reposted {getRelativeTime(post.createdAt)}:
-						</h5>
+						</Link>
 					</div>
 				)}
 				<div className="flex justify-between items-center">
@@ -40,9 +43,12 @@ export function Post({
 						/>
 						<div className="flex flex-col justify-center">
 							<div className="flex flex-row gap-1 items-center">
-								<h4 className="text-medium font-semibold text-default-700 inline-block align-middle leading-normal">
+								<Link
+									href={`/home/user/${post.originalPost?.authorId ?? post.authorId}`}
+									className="text-medium font-semibold text-default-700 inline-block align-middle leading-normal"
+								>
 									{post.originalPost?.author.name ?? post.author.name}
-								</h4>
+								</Link>
 								{(post.originalPost?.author.verified ?? post.author.verified) && (
 									<IconDiscountCheckFilled width={18} height={18} className="text-sky-600" />
 								)}

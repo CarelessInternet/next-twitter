@@ -71,7 +71,7 @@ export const loadReplies: LoadMoreAction<'id', ReplyData[]> = async ({
 		where: { postId },
 		include: {
 			user: { select: { name: true, image: true, verified: true, email: true } },
-			likes: { select: { userId: true } }
+			likes: { select: { id: true, userId: true } }
 		},
 		orderBy: [{ id: 'desc' }],
 		skip: offset * REPLY_SIZE,
@@ -96,7 +96,7 @@ export default async function SpecificPost({ params: { id } }: Parameters) {
 		where: { id: Number(id) },
 		include: {
 			author: { select: { name: true, image: true, verified: true, email: true } },
-			likes: { select: { userId: true } },
+			likes: { select: { id: true, userId: true } },
 			reposts: { select: { authorId: true } },
 			originalPost: {
 				include: { author: { select: { name: true, image: true, verified: true, email: true } } }
